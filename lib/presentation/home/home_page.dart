@@ -34,14 +34,14 @@ class _HomePageState extends State<HomePage> {
       locationName: 'Cupertino',
       degrees: '14',
       weatherDescription: '',
-      icon: Images.ic01d,
+      icon: Images.ic02d,
       dayName: 'Wednesday',
     ),
     WeatherDay(
       locationName: 'Cupertino',
       degrees: '14',
       weatherDescription: '40%',
-      icon: Images.ic01d,
+      icon: Images.ic09d,
       dayName: 'Thursday',
     ),
   ];
