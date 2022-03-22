@@ -1,7 +1,6 @@
 import 'package:dbp_flutter_course/models/weather_day.dart';
-import 'package:dbp_flutter_course/resources/images.dart';
+import 'package:dbp_flutter_course/presentation/home/widgets/current_location_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class WeatherToday extends StatelessWidget {
   const WeatherToday({
@@ -31,21 +30,9 @@ class WeatherToday extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Opacity(
-                  opacity: 0.5,
-                  child: SvgPicture.asset(Images.icGeoMark),
-                ),
-                const SizedBox(width: 4),
-                Text(
-                  weatherDay.locationName,
-                  style: TextStyle(
-                    color: const Color(0xFF070501).withOpacity(0.6),
-                    fontSize: 16,
-                  ),
-                ),
-              ],
+            CurrentLocationWidget(
+              color: const Color(0xFF070501).withOpacity(0.6),
+              weatherDay: weatherDay,
             ),
             Text(
               '${weatherDay.degrees}°',

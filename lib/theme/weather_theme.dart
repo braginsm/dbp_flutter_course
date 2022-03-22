@@ -25,6 +25,8 @@ class WeatherTheme {
     scaffoldBackgroundColor: Colors.white,
     shadowColor: const Color.fromRGBO(255, 191, 0, 0.2),
     textTheme: const TextTheme(
+      bodyText1: defaultTextStyle,
+      bodyText2: defaultTextStyle,
       headline1: TextStyle(
         fontFamily: defaultFontFamily,
         color: Colors.black,
