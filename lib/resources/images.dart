@@ -7,6 +7,7 @@ class Images {
   static const icSearch = '$svgFolder/ic_search.svg';
   static const icLocation = '$svgFolder/ic_location.svg';
   static const icGeoMark = '$svgFolder/ic_geo_mark.svg';
+  static const icClose = '$svgFolder/ic_close.svg';
 
   //weather images
   static const ic01d = '$pngFolder/01d.png';
