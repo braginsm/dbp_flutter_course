@@ -16,14 +16,10 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  final currentWeatherDay = WeatherDay(
-    locationName: 'Cupertino',
-    degrees: '12',
-    weatherDescription: 'Sunny and bright',
-    icon: Images.ic01d,
-    dayName: '',
-  );
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
+  final _chosenCity = ValueNotifier('Cupertino');
+  late WeatherDay currentWeatherDay;
   final weatherDays = [
     WeatherDay(
       locationName: 'Cupertino',
@@ -55,6 +51,52 @@ class _HomePageState extends State<HomePage> {
     ),
   ];
 
+  List<String> pastSearchCities = ['Moscow', 'New York City'];
+
+  late AnimationController _animationController;
+  late Animation<double> _curve;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    currentWeatherDay = WeatherDay(
+      locationName: _chosenCity.value,
+      degrees: '12',
+      weatherDescription: 'Sunny and bright',
+      icon: Images.ic01d,
+      dayName: '',
+    );
+
+    _initAnimation();
+  }
+
+  void _initAnimation() {
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200),
+    );
+    _curve = CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOut,
+    );
+    _animation = Tween<double>(begin: 0, end: 8).animate(_curve)
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          _animationController.reverse();
+        } else if (status == AnimationStatus.dismissed) {
+          _animationController.forward();
+        }
+      });
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,7 +109,11 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             onPressed: () => appRouter.goTo(
               context: context,
-              route: SearchPage(weatherDay: currentWeatherDay),
+              route: SearchPage(
+                pastSearchCities: pastSearchCities,
+                chosenCity: _chosenCity,
+                onCityChosen: () => setState(() {}),
+              ),
             ),
             icon: SvgPicture.asset(Images.icSearch),
           ),
@@ -77,7 +123,10 @@ class _HomePageState extends State<HomePage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const SizedBox.shrink(),
-          WeatherToday(weatherDay: currentWeatherDay),
+          WeatherToday(
+            weatherDay: currentWeatherDay,
+            animation: _animation,
+          ),
           SafeArea(child: WeatherDaysList(weatherDays: weatherDays)),
         ],
       ),

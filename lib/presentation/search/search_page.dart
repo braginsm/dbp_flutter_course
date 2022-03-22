@@ -1,5 +1,4 @@
 import 'package:dbp_flutter_course/fixtures/city_items.dart';
-import 'package:dbp_flutter_course/models/weather_day.dart';
 import 'package:dbp_flutter_course/navigation/app_router.dart';
 import 'package:dbp_flutter_course/presentation/home/widgets/current_location_widget.dart';
 import 'package:dbp_flutter_course/presentation/search/widgets/cities_list_item_widget.dart';
@@ -11,9 +10,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({required this.weatherDay, Key? key}) : super(key: key);
+  const SearchPage({
+    required this.chosenCity,
+    required this.onCityChosen,
+    required this.pastSearchCities,
+    Key? key,
+  }) : super(key: key);
 
-  final WeatherDay weatherDay;
+  final ValueNotifier<String> chosenCity;
+  final VoidCallback onCityChosen;
+  final List<String> pastSearchCities;
 
   @override
   State<SearchPage> createState() => _SearchPageState();
@@ -22,15 +28,15 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   final _controller = TextEditingController();
   final _focusNode = FocusNode();
-  List<String> pastSearchCities = ['Moscow', 'New York City'];
-  String? chosenCity;
 
   void onCityItemTap(String city) {
     setState(() {
-      pastSearchCities.add(city);
-      chosenCity = city;
+      widget.pastSearchCities.add(city);
+      widget.chosenCity.value = city;
       _focusNode.unfocus();
     });
+    widget.onCityChosen.call();
+    appRouter.goBack(context);
   }
 
   @override
@@ -67,29 +73,36 @@ class _SearchPageState extends State<SearchPage> {
             const SizedBox(height: 24),
             if (!_focusNode.hasFocus) ...[
               CurrentLocationWidget(
-                weatherDay: widget.weatherDay,
+                city: widget.chosenCity.value,
                 color: const Color(0xFF010E82),
+                onTap: () => appRouter.goBack(context),
               ),
               const SizedBox(height: 24),
               const Divider(),
               const SizedBox(height: 16),
               PastSearchBlock(
-                pastSearchCities: pastSearchCities,
+                pastSearchCities: widget.pastSearchCities,
                 onClearAllTap: () {
                   setState(() {
-                    pastSearchCities.clear();
+                    widget.pastSearchCities.clear();
                   });
                 },
               ),
-            ] else ...[
-              for (var item in testCities) ...[
-                CitiesListItemWidget(
-                  city: item,
-                  onTap: () => onCityItemTap(item.city),
+            ] else
+              Expanded(
+                child: ListView.separated(
+                  itemCount: testCities.length,
+                  itemBuilder: (context, index) {
+                    final item = testCities[index];
+
+                    return CitiesListItemWidget(
+                      city: item,
+                      onTap: () => onCityItemTap(item.city),
+                    );
+                  },
+                  separatorBuilder: (_, __) => const Divider(),
                 ),
-                const Divider(),
-              ]
-            ],
+              ),
           ],
         ),
       ),
