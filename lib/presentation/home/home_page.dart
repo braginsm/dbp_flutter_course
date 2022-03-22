@@ -1,3 +1,5 @@
+import 'package:dash_kit_core/dash_kit_core.dart';
+import 'package:dbp_flutter_course/features/geolocation/actions/get_geolocation_action.dart';
 import 'package:dbp_flutter_course/models/weather_day.dart';
 import 'package:dbp_flutter_course/navigation/app_router.dart';
 import 'package:dbp_flutter_course/presentation/home/widgets/weather_days_list.dart';
@@ -97,13 +99,37 @@ class _HomePageState extends State<HomePage>
     super.dispose();
   }
 
+  void _getGeolocation() {
+    context.dispatch(GetGeolocationAction()).then((_) {
+      showSimpleDialog(
+        context: context,
+        title: 'Success!',
+        text: 'Geolocation received',
+      );
+    }).catchError((error) {
+      showSimpleDialog(
+        context: context,
+        title: 'Oops!',
+        text: error.toString(),
+      );
+    });
+  }
+
+  void showSimpleDialog({
+    required BuildContext context,
+    required String title,
+    required String text,
+  }) {
+    showSimpleDialog(context: context, title: title, text: text);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: SvgPicture.asset(Images.icLocation),
-          onPressed: () {},
+          onPressed: _getGeolocation,
         ),
         actions: [
           IconButton(
