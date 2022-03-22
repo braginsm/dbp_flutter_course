@@ -39,14 +39,21 @@ class _PastSearchBlockState extends State<PastSearchBlock> {
           ],
         ),
         const SizedBox(height: 16),
-        for (var item in widget.pastSearchCities) ...[
-          PastSearchItemWidget(
-            city: item,
-            onTap: () {},
-            onClose: () {},
-          ),
-          const SizedBox(height: 8),
-        ],
+        ListView.separated(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: widget.pastSearchCities.length,
+          itemBuilder: (context, index) {
+            final item = widget.pastSearchCities[index];
+
+            return PastSearchItemWidget(
+              city: item,
+              onTap: () {},
+              onClose: () {},
+            );
+          },
+          separatorBuilder: (_, __) => const SizedBox(height: 8),
+        ),
       ],
     );
   }

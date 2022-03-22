@@ -1,19 +1,20 @@
-import 'package:dbp_flutter_course/models/weather_day.dart';
 import 'package:dbp_flutter_course/resources/images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CurrentLocationWidget extends StatelessWidget {
   const CurrentLocationWidget({
-    required this.weatherDay,
+    required this.city,
     required this.color,
     this.fontSize = 16,
+    this.onTap,
     Key? key,
   }) : super(key: key);
 
-  final WeatherDay weatherDay;
+  final String city;
   final Color color;
   final double fontSize;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,10 @@ class CurrentLocationWidget extends StatelessWidget {
           child: SvgPicture.asset(Images.icGeoMark, color: color),
         ),
         SizedBox(width: fontSize / 4),
-        Text(weatherDay.locationName, style: textStyle),
+        GestureDetector(
+          onTap: onTap,
+          child: Text(city, style: textStyle),
+        ),
       ],
     );
   }
