@@ -99,7 +99,7 @@ class _HomePageState extends State<HomePage>
     super.dispose();
   }
 
-  void _getGeolocation() {
+  Future<void> _getGeolocation() async {
     context.dispatch(GetGeolocationAction()).then((_) {
       showSimpleDialog(
         context: context,
@@ -115,12 +115,32 @@ class _HomePageState extends State<HomePage>
     });
   }
 
-  void showSimpleDialog({
+  Future<void> showSimpleDialog({
     required BuildContext context,
     required String title,
     required String text,
-  }) {
-    showSimpleDialog(context: context, title: title, text: text);
+  }) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text(
+          title,
+          style: const TextStyle(
+            color: Colors.black,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        content: Text(
+          text,
+          style: const TextStyle(
+            color: Colors.black,
+            fontSize: 18,
+            fontWeight: FontWeight.w300,
+          ),
+        ),
+      ),
+    );
   }
 
   @override
