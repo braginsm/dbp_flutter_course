@@ -1,4 +1,4 @@
-import 'package:dbp_flutter_course/models/city_item.dart';
+import 'package:dbp_flutter_course/models/network/responses/city_item/city_item.dart';
 import 'package:flutter/material.dart';
 
 class CitiesListItemWidget extends StatelessWidget {
@@ -20,7 +20,7 @@ class CitiesListItemWidget extends StatelessWidget {
         child: Row(
           children: [
             Text(
-              city.city,
+              city.name,
               style: const TextStyle(
                 color: Colors.black,
                 fontSize: 18,

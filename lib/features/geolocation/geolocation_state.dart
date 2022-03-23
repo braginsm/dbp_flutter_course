@@ -1,7 +1,7 @@
 library geolocation_state;
 
 import 'package:built_value/built_value.dart';
-import 'package:dbp_flutter_course/models/location_point.dart';
+import 'package:dbp_flutter_course/models/network/responses/location_point/location_point.dart';
 
 part 'geolocation_state.g.dart';
 

@@ -1,11 +1,14 @@
 import 'package:dash_kit_core/dash_kit_core.dart';
+import 'package:dbp_flutter_course/app/operations.dart';
 import 'package:dbp_flutter_course/features/geolocation/actions/get_geolocation_action.dart';
+import 'package:dbp_flutter_course/features/weather/actions/get_weather_by_location_action.dart';
 import 'package:dbp_flutter_course/models/weather_day.dart';
 import 'package:dbp_flutter_course/navigation/app_router.dart';
 import 'package:dbp_flutter_course/presentation/home/widgets/weather_days_list.dart';
 import 'package:dbp_flutter_course/presentation/home/widgets/weather_today.dart';
 import 'package:dbp_flutter_course/presentation/search/search_page.dart';
 import 'package:dbp_flutter_course/resources/images.dart';
+import 'package:dbp_flutter_course/widgets/connected_loadable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -71,6 +74,7 @@ class _HomePageState extends State<HomePage>
     );
 
     _initAnimation();
+    WidgetsBinding.instance!.addPostFrameCallback((_) => _getGeolocation());
   }
 
   void _initAnimation() {
@@ -99,20 +103,21 @@ class _HomePageState extends State<HomePage>
     super.dispose();
   }
 
-  Future<void> _getGeolocation() async {
-    context.dispatch(GetGeolocationAction()).then((_) {
-      showSimpleDialog(
-        context: context,
-        title: 'Success!',
-        text: 'Geolocation received',
-      );
-    }).catchError((error) {
+  void _getGeolocation() {
+    context
+        .dispatch(GetGeolocationAction())
+        .then((_) => _getWeatherByLocation())
+        .catchError((error) {
       showSimpleDialog(
         context: context,
         title: 'Oops!',
         text: error.toString(),
       );
     });
+  }
+
+  void _getWeatherByLocation() {
+    context.dispatch(GetWeatherByLocationAction());
   }
 
   Future<void> showSimpleDialog({
@@ -165,16 +170,18 @@ class _HomePageState extends State<HomePage>
           ),
         ],
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const SizedBox.shrink(),
-          WeatherToday(
-            weatherDay: currentWeatherDay,
-            animation: _animation,
-          ),
-          SafeArea(child: WeatherDaysList(weatherDays: weatherDays)),
-        ],
+      body: ConnectedLoadable(
+        converter: (s) =>
+            s.getOperationState(Operation.getGeolocation).isInProgress ||
+            s.getOperationState(Operation.getWeatherByLocation).isInProgress,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const SizedBox.shrink(),
+            WeatherToday(animation: _animation),
+            const SafeArea(child: WeatherDaysList()),
+          ],
+        ),
       ),
     );
   }

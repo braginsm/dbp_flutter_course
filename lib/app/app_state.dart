@@ -2,24 +2,23 @@
 import 'package:built_value/built_value.dart';
 import 'package:dash_kit_core/dash_kit_core.dart';
 import 'package:dbp_flutter_course/features/geolocation/geolocation_state.dart';
+import 'package:dbp_flutter_course/features/weather/weather_state.dart';
 
 part 'app_state.g.dart';
 
-// The main thing you should notice here is GlobalState;
 abstract class AppState
     implements Built<AppState, AppStateBuilder>, GlobalState {
   factory AppState([void Function(AppStateBuilder) updates]) = _$AppState;
 
   AppState._();
 
-  // You should make GeolocationState immutable either
   GeolocationState get geolocation;
 
-  // And implementation of GlobalState interface
+  WeatherState get weather;
+
   @override
   BuiltMap<Object, OperationState> get operationsState;
 
-  // You should add an update of immutable state for operation inside this
   @override
   T updateOperation<T extends GlobalState>(
     Object? operationKey,
@@ -45,7 +44,9 @@ abstract class AppState
 
   static AppState initial() {
     return AppState(
-      (b) => b.geolocation = GeolocationState.initial().toBuilder(),
+      (b) => b
+        ..geolocation = GeolocationState.initial().toBuilder()
+        ..weather = WeatherState.initial().toBuilder(),
     );
   }
 }
