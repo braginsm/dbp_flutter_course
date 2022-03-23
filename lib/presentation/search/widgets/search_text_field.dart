@@ -1,5 +1,6 @@
 import 'package:dbp_flutter_course/resources/images.dart';
 import 'package:dbp_flutter_course/resources/strings.dart';
+import 'package:dbp_flutter_course/theme/weather_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -21,7 +22,7 @@ class SearchTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const textStyle = TextStyle(
+    final textStyle = defaultTextStyle.copyWith(
       fontSize: 16,
       height: 1.5,
       color: Colors.black,

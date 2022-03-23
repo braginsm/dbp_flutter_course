@@ -20,6 +20,7 @@ class LinkText extends StatelessWidget {
           fontSize: 18,
           color: Theme.of(context).colorScheme.primary,
         ),
+        maxLines: 1,
       ),
     );
   }

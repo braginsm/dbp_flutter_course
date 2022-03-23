@@ -1,3 +1,4 @@
+import 'package:dbp_flutter_course/utils/test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -10,6 +11,10 @@ Animation<double> useCurvedAnimation() {
     parent: animationController,
     curve: Curves.easeOut,
   ));
+
+  if (isTestingEnvironment()) {
+    return animation;
+  }
 
   animation.addStatusListener((status) {
     if (status == AnimationStatus.completed) {

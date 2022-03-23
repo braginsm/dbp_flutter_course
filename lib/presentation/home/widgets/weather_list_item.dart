@@ -15,49 +15,45 @@ class WeatherListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     const textStyle = TextStyle(color: Colors.black, fontSize: 18);
 
-    return Column(
+    return Row(
       children: [
-        Row(
-          children: [
-            Expanded(
-              flex: 4,
-              child: Text(
-                weatherDay.dayName,
-                style: textStyle,
-              ),
-            ),
-            Expanded(
-              flex: 4,
-              child: Row(
-                children: [
-                  Image.asset(
-                    weatherDay.icon,
-                    width: 19,
-                    height: 19,
-                  ),
-                  const SizedBox(width: 8),
-                  Flexible(
-                    child: Text(
-                      weatherDay.weatherDescription,
-                      style: textStyle.copyWith(
-                        color: const Color(0xFF010E82).withOpacity(0.5),
-                      ),
-                      maxLines: 2,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Text(
-                '${weatherDay.degrees}°',
-                style: textStyle,
-                textAlign: TextAlign.right,
-              ),
-            ),
-          ],
+        Expanded(
+          flex: 4,
+          child: Text(
+            weatherDay.dayName,
+            style: textStyle,
+          ),
         ),
-        const Divider(),
+        Expanded(
+          flex: 4,
+          child: Row(
+            children: [
+              Image.asset(
+                weatherDay.icon,
+                width: 19,
+                height: 19,
+              ),
+              const SizedBox(width: 8),
+              Flexible(
+                child: Text(
+                  weatherDay.weatherDescription,
+                  style: textStyle.copyWith(
+                    color: const Color(0xFF010E82).withOpacity(0.5),
+                  ),
+                  maxLines: 2,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: Text(
+            '${weatherDay.degrees}°',
+            style: textStyle,
+            textAlign: TextAlign.right,
+            maxLines: 1,
+          ),
+        ),
       ],
     );
   }
