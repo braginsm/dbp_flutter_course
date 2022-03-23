@@ -13,15 +13,22 @@ class _$WeatherState extends WeatherState {
   final WeatherDay today;
   @override
   final BuiltList<WeatherDay> nextDays;
+  @override
+  final BuiltList<String> searchHistory;
 
   factory _$WeatherState([void Function(WeatherStateBuilder)? updates]) =>
       (new WeatherStateBuilder()..update(updates)).build();
 
   _$WeatherState._(
-      {this.currentCity, required this.today, required this.nextDays})
+      {this.currentCity,
+      required this.today,
+      required this.nextDays,
+      required this.searchHistory})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(today, 'WeatherState', 'today');
     BuiltValueNullFieldError.checkNotNull(nextDays, 'WeatherState', 'nextDays');
+    BuiltValueNullFieldError.checkNotNull(
+        searchHistory, 'WeatherState', 'searchHistory');
   }
 
   @override
@@ -37,13 +44,16 @@ class _$WeatherState extends WeatherState {
     return other is WeatherState &&
         currentCity == other.currentCity &&
         today == other.today &&
-        nextDays == other.nextDays;
+        nextDays == other.nextDays &&
+        searchHistory == other.searchHistory;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc(0, currentCity.hashCode), today.hashCode), nextDays.hashCode));
+        $jc($jc($jc(0, currentCity.hashCode), today.hashCode),
+            nextDays.hashCode),
+        searchHistory.hashCode));
   }
 
   @override
@@ -51,7 +61,8 @@ class _$WeatherState extends WeatherState {
     return (newBuiltValueToStringHelper('WeatherState')
           ..add('currentCity', currentCity)
           ..add('today', today)
-          ..add('nextDays', nextDays))
+          ..add('nextDays', nextDays)
+          ..add('searchHistory', searchHistory))
         .toString();
   }
 }
@@ -74,6 +85,12 @@ class WeatherStateBuilder
   set nextDays(ListBuilder<WeatherDay>? nextDays) =>
       _$this._nextDays = nextDays;
 
+  ListBuilder<String>? _searchHistory;
+  ListBuilder<String> get searchHistory =>
+      _$this._searchHistory ??= new ListBuilder<String>();
+  set searchHistory(ListBuilder<String>? searchHistory) =>
+      _$this._searchHistory = searchHistory;
+
   WeatherStateBuilder();
 
   WeatherStateBuilder get _$this {
@@ -82,6 +99,7 @@ class WeatherStateBuilder
       _currentCity = $v.currentCity;
       _today = $v.today;
       _nextDays = $v.nextDays.toBuilder();
+      _searchHistory = $v.searchHistory.toBuilder();
       _$v = null;
     }
     return this;
@@ -107,12 +125,15 @@ class WeatherStateBuilder
               currentCity: currentCity,
               today: BuiltValueNullFieldError.checkNotNull(
                   today, 'WeatherState', 'today'),
-              nextDays: nextDays.build());
+              nextDays: nextDays.build(),
+              searchHistory: searchHistory.build());
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'nextDays';
         nextDays.build();
+        _$failedField = 'searchHistory';
+        searchHistory.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'WeatherState', _$failedField, e.toString());

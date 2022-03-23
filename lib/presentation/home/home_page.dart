@@ -1,184 +1,76 @@
 import 'package:dash_kit_core/dash_kit_core.dart';
+import 'package:dbp_flutter_course/app/app_state.dart';
 import 'package:dbp_flutter_course/app/operations.dart';
 import 'package:dbp_flutter_course/features/geolocation/actions/get_geolocation_action.dart';
 import 'package:dbp_flutter_course/features/weather/actions/get_weather_by_location_action.dart';
-import 'package:dbp_flutter_course/models/weather_day.dart';
 import 'package:dbp_flutter_course/navigation/app_router.dart';
+import 'package:dbp_flutter_course/presentation/dialogs/dialogs.dart';
+import 'package:dbp_flutter_course/presentation/home/hooks/home_page_hooks.dart';
 import 'package:dbp_flutter_course/presentation/home/widgets/weather_days_list.dart';
 import 'package:dbp_flutter_course/presentation/home/widgets/weather_today.dart';
 import 'package:dbp_flutter_course/presentation/search/search_page.dart';
 import 'package:dbp_flutter_course/resources/images.dart';
 import 'package:dbp_flutter_course/widgets/connected_loadable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends HookWidget {
   const HomePage({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage>
-    with SingleTickerProviderStateMixin {
-  final _chosenCity = ValueNotifier('Cupertino');
-  late WeatherDay currentWeatherDay;
-  final weatherDays = [
-    WeatherDay(
-      locationName: 'Cupertino',
-      degrees: '10',
-      weatherDescription: '',
-      icon: Images.ic01d,
-      dayName: 'Monday',
-    ),
-    WeatherDay(
-      locationName: 'Cupertino',
-      degrees: '15',
-      weatherDescription: '',
-      icon: Images.ic01d,
-      dayName: 'Tuesday',
-    ),
-    WeatherDay(
-      locationName: 'Cupertino',
-      degrees: '14',
-      weatherDescription: '',
-      icon: Images.ic02d,
-      dayName: 'Wednesday',
-    ),
-    WeatherDay(
-      locationName: 'Cupertino',
-      degrees: '14',
-      weatherDescription: '40%',
-      icon: Images.ic09d,
-      dayName: 'Thursday',
-    ),
-  ];
-
-  List<String> pastSearchCities = ['Moscow', 'New York City'];
-
-  late AnimationController _animationController;
-  late Animation<double> _curve;
-  late Animation<double> _animation;
-
-  @override
-  void initState() {
-    super.initState();
-    currentWeatherDay = WeatherDay(
-      locationName: _chosenCity.value,
-      degrees: '12',
-      weatherDescription: 'Sunny and bright',
-      icon: Images.ic01d,
-      dayName: '',
-    );
-
-    _initAnimation();
-    WidgetsBinding.instance!.addPostFrameCallback((_) => _getGeolocation());
-  }
-
-  void _initAnimation() {
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1200),
-    );
-    _curve = CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeOut,
-    );
-    _animation = Tween<double>(begin: 0, end: 8).animate(_curve)
-      ..addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          _animationController.reverse();
-        } else if (status == AnimationStatus.dismissed) {
-          _animationController.forward();
-        }
-      });
-    _animationController.forward();
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
-
-  void _getGeolocation() {
-    context
-        .dispatch(GetGeolocationAction())
-        .then((_) => _getWeatherByLocation())
-        .catchError((error) {
-      showSimpleDialog(
-        context: context,
-        title: 'Oops!',
-        text: error.toString(),
-      );
-    });
-  }
-
-  void _getWeatherByLocation() {
-    context.dispatch(GetWeatherByLocationAction());
-  }
-
-  Future<void> showSimpleDialog({
-    required BuildContext context,
-    required String title,
-    required String text,
-  }) async {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: Text(
-          title,
-          style: const TextStyle(
-            color: Colors.black,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        content: Text(
-          text,
-          style: const TextStyle(
-            color: Colors.black,
-            fontSize: 18,
-            fontWeight: FontWeight.w300,
-          ),
-        ),
-      ),
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final context = useContext();
+    final storeProvider = StoreProvider.of<AppState>(context, 'dispatcher');
+    final dispatch = storeProvider.dispatch;
+    final animation = useCurvedAnimation();
+
+    final getGeolocationByLocation = () {
+      dispatch(GetGeolocationAction())
+          .then((_) => dispatch(GetWeatherByLocationAction()))
+          .catchError((error) {
+        showSimpleDialog(
+          context: context,
+          title: 'Oops!',
+          text: error.toString(),
+        );
+      });
+    };
+
+    useEffect(() {
+      getGeolocationByLocation();
+      return null;
+    }, const []);
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: SvgPicture.asset(Images.icLocation),
-          onPressed: _getGeolocation,
+          onPressed: getGeolocationByLocation,
         ),
         actions: [
           IconButton(
             onPressed: () => appRouter.goTo(
               context: context,
-              route: SearchPage(
-                pastSearchCities: pastSearchCities,
-                chosenCity: _chosenCity,
-                onCityChosen: () => setState(() {}),
-              ),
+              route: const SearchPage(),
             ),
             icon: SvgPicture.asset(Images.icSearch),
           ),
         ],
       ),
       body: ConnectedLoadable(
-        converter: (s) =>
-            s.getOperationState(Operation.getGeolocation).isInProgress ||
-            s.getOperationState(Operation.getWeatherByLocation).isInProgress,
+        converter: (s) => [
+          s.getOperationState(Operation.getGeolocation),
+          s.getOperationState(Operation.getWeatherByLocation),
+          s.getOperationState(Operation.getWeatherByCityName),
+        ].any((element) => element.isInProgress),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const SizedBox.shrink(),
-            WeatherToday(animation: _animation),
+            WeatherToday(animation: animation),
             const SafeArea(child: WeatherDaysList()),
           ],
         ),
