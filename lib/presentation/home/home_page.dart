@@ -40,7 +40,9 @@ class HomePage extends HookWidget {
     };
 
     useEffect(() {
-      getGeolocationByLocation();
+      if (storeProvider.state.geolocation.point == null) {
+        getGeolocationByLocation();
+      }
       return null;
     }, const []);
 
@@ -69,9 +71,16 @@ class HomePage extends HookWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const SizedBox.shrink(),
-            WeatherToday(animation: animation),
-            const SafeArea(child: WeatherDaysList()),
+            const Spacer(),
+            Flexible(
+              flex: 4,
+              child: WeatherToday(animation: animation),
+            ),
+            const Spacer(),
+            const Flexible(
+              flex: 3,
+              child: SafeArea(child: WeatherDaysList()),
+            ),
           ],
         ),
       ),

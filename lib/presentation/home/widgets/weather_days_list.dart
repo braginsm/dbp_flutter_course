@@ -12,6 +12,7 @@ class WeatherDaysList extends StatelessWidget {
     return AppStateConnector<BuiltList<WeatherDay>>(
       converter: (s) => s.weather.nextDays,
       builder: (context, nextDays) => Container(
+        height: MediaQuery.of(context).size.height / 4,
         padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
         decoration: const BoxDecoration(
           color: Colors.white,
@@ -23,9 +24,14 @@ class WeatherDaysList extends StatelessWidget {
             ),
           ],
         ),
-        child: Column(
-          children:
-              nextDays.map((e) => WeatherListItem(weatherDay: e)).toList(),
+        child: ListView.separated(
+          itemCount: nextDays.length,
+          itemBuilder: (_, index) {
+            final item = nextDays[index];
+
+            return WeatherListItem(weatherDay: item);
+          },
+          separatorBuilder: (_, __) => const Divider(),
         ),
       ),
     );

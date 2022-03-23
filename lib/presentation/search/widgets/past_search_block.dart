@@ -1,6 +1,6 @@
-import 'package:dbp_flutter_course/presentation/search/widgets/link_text.dart';
 import 'package:dbp_flutter_course/presentation/search/widgets/past_search_item_widget.dart';
 import 'package:dbp_flutter_course/resources/strings.dart';
+import 'package:dbp_flutter_course/widgets/link_text.dart';
 import 'package:flutter/material.dart';
 
 class PastSearchBlock extends StatefulWidget {
@@ -25,11 +25,14 @@ class _PastSearchBlockState extends State<PastSearchBlock> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              Strings.pastSearch,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
+            Flexible(
+              child: Text(
+                Strings.pastSearch,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+                maxLines: 2,
               ),
             ),
             LinkText(
