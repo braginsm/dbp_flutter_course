@@ -1,3 +1,4 @@
 enum Operation {
   getGeolocation,
+  getWeatherByLocation,
 }

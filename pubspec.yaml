@@ -14,11 +14,13 @@ dependencies:
   built_value_generator: ^8.1.4
   cupertino_icons: ^1.0.2
   dash_kit_core: ^3.0.2
+  dash_kit_network: ^3.1.1
   flutter:
     sdk: flutter
   flutter_svg: ^1.0.3
   geolocator: ^8.2.0
   get_it: ^7.2.0
+  intl: ^0.17.0
 
 dev_dependencies:
   build_runner: ^2.1.8
@@ -27,7 +29,7 @@ dev_dependencies:
     sdk: flutter
   freezed: ^1.1.1
   json_serializable: ^6.1.5
-    
+
 flutter:
   uses-material-design: true
   assets:

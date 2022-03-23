@@ -36,10 +36,13 @@ class WeatherListItem extends StatelessWidget {
                     height: 19,
                   ),
                   const SizedBox(width: 8),
-                  Text(
-                    weatherDay.weatherDescription,
-                    style: textStyle.copyWith(
-                      color: const Color(0xFF010E82).withOpacity(0.5),
+                  Flexible(
+                    child: Text(
+                      weatherDay.weatherDescription,
+                      style: textStyle.copyWith(
+                        color: const Color(0xFF010E82).withOpacity(0.5),
+                      ),
+                      maxLines: 2,
                     ),
                   ),
                 ],

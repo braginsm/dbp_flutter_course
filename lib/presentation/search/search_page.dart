@@ -97,7 +97,7 @@ class _SearchPageState extends State<SearchPage> {
 
                     return CitiesListItemWidget(
                       city: item,
-                      onTap: () => onCityItemTap(item.city),
+                      onTap: () => onCityItemTap(item.name),
                     );
                   },
                   separatorBuilder: (_, __) => const Divider(),
