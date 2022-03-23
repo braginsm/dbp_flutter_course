@@ -25,7 +25,6 @@ class HomePage extends HookWidget {
     final context = useContext();
     final storeProvider = StoreProvider.of<AppState>(context, 'dispatcher');
     final dispatch = storeProvider.dispatch;
-    final pastSearchCities = <String>[];
     final animation = useCurvedAnimation();
 
     final getGeolocationByLocation = () {
