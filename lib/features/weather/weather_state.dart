@@ -21,6 +21,8 @@ abstract class WeatherState
 
   BuiltList<WeatherDay> get nextDays;
 
+  BuiltList<String> get searchHistory;
+
   static WeatherState initial() => WeatherState(
         (b) => b
           ..currentCity = null
@@ -31,6 +33,7 @@ abstract class WeatherState
             locationName: '',
             weatherDescription: '',
           )
-          ..nextDays = ListBuilder(),
+          ..nextDays = ListBuilder()
+          ..searchHistory = ListBuilder(),
       );
 }

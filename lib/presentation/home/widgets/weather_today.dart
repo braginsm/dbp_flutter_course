@@ -1,5 +1,5 @@
 import 'package:dbp_flutter_course/core/app_store_connector.dart';
-import 'package:dbp_flutter_course/models/weather_day.dart';
+import 'package:dbp_flutter_course/features/weather/weather_state.dart';
 import 'package:dbp_flutter_course/presentation/home/widgets/current_location_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -13,9 +13,9 @@ class WeatherToday extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppStateConnector<WeatherDay>(
-      converter: (s) => s.weather.today,
-      builder: (context, weatherDay) => Row(
+    return AppStateConnector<WeatherState>(
+      converter: (s) => s.weather,
+      builder: (context, weather) => Row(
         children: [
           Expanded(
             child: AnimatedBuilder(
@@ -36,7 +36,7 @@ class WeatherToday extends StatelessWidget {
                   child: Container(
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage(weatherDay.icon),
+                        image: AssetImage(weather.today.icon),
                         fit: BoxFit.fitHeight,
                         alignment: Alignment.centerRight,
                       ),
@@ -52,14 +52,14 @@ class WeatherToday extends StatelessWidget {
             children: [
               CurrentLocationWidget(
                 color: const Color(0xFF070501).withOpacity(0.6),
-                city: weatherDay.locationName,
+                city: weather.currentCity?.name ?? '',
               ),
               Text(
-                '${weatherDay.degrees}°',
+                '${weather.today.degrees}°',
                 style: Theme.of(context).textTheme.headline1,
               ),
               Text(
-                weatherDay.weatherDescription,
+                weather.today.weatherDescription,
                 style: const TextStyle(
                   color: Colors.black,
                   fontSize: 20,

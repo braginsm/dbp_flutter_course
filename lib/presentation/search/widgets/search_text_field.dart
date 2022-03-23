@@ -9,6 +9,7 @@ class SearchTextField extends StatelessWidget {
     required this.focusNode,
     required this.onTap,
     required this.onCloseTap,
+    required this.onEditingComplete,
     Key? key,
   }) : super(key: key);
 
@@ -16,6 +17,7 @@ class SearchTextField extends StatelessWidget {
   final FocusNode focusNode;
   final VoidCallback onTap;
   final VoidCallback onCloseTap;
+  final Function(String) onEditingComplete;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +33,7 @@ class SearchTextField extends StatelessWidget {
       controller: controller,
       focusNode: focusNode,
       onTap: onTap,
+      onEditingComplete: () => onEditingComplete(controller.text),
       decoration: InputDecoration(
         contentPadding: EdgeInsets.zero,
         prefixIcon: Padding(
