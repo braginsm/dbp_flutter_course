@@ -1,6 +1,7 @@
 import 'package:dash_kit_core/dash_kit_core.dart';
 import 'package:dbp_flutter_course/app/app_state.dart';
 import 'package:dbp_flutter_course/app/operations.dart';
+import 'package:dbp_flutter_course/core/hooks/push_notification_hooks.dart';
 import 'package:dbp_flutter_course/features/geolocation/actions/get_geolocation_action.dart';
 import 'package:dbp_flutter_course/features/weather/actions/get_weather_by_location_action.dart';
 import 'package:dbp_flutter_course/navigation/app_router.dart';
@@ -10,6 +11,7 @@ import 'package:dbp_flutter_course/presentation/home/widgets/weather_days_list.d
 import 'package:dbp_flutter_course/presentation/home/widgets/weather_today.dart';
 import 'package:dbp_flutter_course/presentation/search/search_page.dart';
 import 'package:dbp_flutter_course/resources/images.dart';
+import 'package:dbp_flutter_course/services/push_notification_service.dart';
 import 'package:dbp_flutter_course/widgets/connected_loadable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -45,6 +47,14 @@ class HomePage extends HookWidget {
       }
       return null;
     }, const []);
+
+    requestNotificationPermissions();
+
+    usePushNotificationToken();
+
+    useFirebaseMessagingOpennedAppListener();
+    useFirebaseMessagingForegroundListener();
+    useFirebaseMessagingBackgroundListener();
 
     return Scaffold(
       appBar: AppBar(

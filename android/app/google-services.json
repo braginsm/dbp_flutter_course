@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "818578207506",
+    "project_id": "dbp-flutter-course",
+    "storage_bucket": "dbp-flutter-course.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:818578207506:android:496aa6d4093dfb922179cb",
+        "android_client_info": {
+          "package_name": "com.example.dbp_flutter_course"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "818578207506-mhq2ea98nlip7vchp4cflpdqp13ov8vl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbKfz3zK7zmYPz9T3aOGgMVwb9fq7rDSo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "818578207506-mhq2ea98nlip7vchp4cflpdqp13ov8vl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "818578207506-j651uo5hh3i7b9ku0nafhodush667u30.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.dbpFlutterCourse"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
