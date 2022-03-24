@@ -15,6 +15,10 @@ dependencies:
   cupertino_icons: ^1.0.2
   dash_kit_core: ^3.0.2
   dash_kit_network: ^3.1.1
+  firebase_analytics: ^9.1.2
+  firebase_core: ^1.13.1
+  firebase_crashlytics: ^2.5.3
+  firebase_messaging: ^11.2.11
   flutter:
     sdk: flutter
   flutter_hooks: ^0.18.2+1
