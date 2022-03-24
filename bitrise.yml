@@ -59,12 +59,11 @@ workflows:
         inputs:
         - is_update: 'false'
     - flutter-analyze@0: {}
-    - cache-pull@2: {}
     - flutter-test@1:
         inputs:
         - project_location: $BITRISE_FLUTTER_PROJECT_LOCATION
+        is_always_run: true
     - flutter-build@0: {}
-    - cache-push@2: {}
     - deploy-to-bitrise-io@2: {}
 meta:
   bitrise.io:
