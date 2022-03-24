@@ -12,6 +12,7 @@ import 'package:dbp_flutter_course/presentation/home/widgets/weather_today.dart'
 import 'package:dbp_flutter_course/presentation/search/search_page.dart';
 import 'package:dbp_flutter_course/resources/images.dart';
 import 'package:dbp_flutter_course/services/push_notification_service.dart';
+import 'package:dbp_flutter_course/utils/test.dart';
 import 'package:dbp_flutter_course/widgets/connected_loadable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -48,13 +49,15 @@ class HomePage extends HookWidget {
       return null;
     }, const []);
 
-    requestNotificationPermissions();
+    if (!isTestingEnvironment()) {
+      requestNotificationPermissions();
 
-    usePushNotificationToken();
+      usePushNotificationToken();
 
-    useFirebaseMessagingOpennedAppListener();
-    useFirebaseMessagingForegroundListener();
-    useFirebaseMessagingBackgroundListener();
+      useFirebaseMessagingOpennedAppListener();
+      useFirebaseMessagingForegroundListener();
+      useFirebaseMessagingBackgroundListener();
+    }
 
     return Scaffold(
       appBar: AppBar(

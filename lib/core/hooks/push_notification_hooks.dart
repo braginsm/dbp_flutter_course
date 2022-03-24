@@ -1,5 +1,6 @@
 import 'package:dbp_flutter_course/core/hooks/dispatcher_hook.dart';
 import 'package:dbp_flutter_course/features/weather/actions/get_weather_by_city_name_action.dart';
+import 'package:dbp_flutter_course/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -7,8 +8,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 void usePushNotificationToken() {
   useEffect(() {
     Future<void> _initialize() async {
-      await Firebase.initializeApp();
-
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
       final firebaseMessaging = FirebaseMessaging.instance;
 
       firebaseMessaging
@@ -85,7 +87,9 @@ void useFirebaseMessagingBackgroundListener() {
 }
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   print('Handling a background message: ${message.messageId}');
 }
